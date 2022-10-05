@@ -117,4 +117,24 @@ total1 :: [[a]] -> Int
 total1 [] = 0
 total1 (h:t) = length h + total1 t
 
+-- Exercício 17 (ATENÇÃO)
 
+{-Caso de paragem estava errado-}
+
+fun1 :: [(a,b,c)] -> [(a,c)]
+fun1 [] = []
+fun1 ((a,b,c):t) = (a,c) : fun1 t
+
+-- Exercício 18 
+
+cola1 :: [(String,b,c)] -> String
+cola1 [] = []
+cola1 ((a,b,c):t) = a ++ cola1 t 
+
+-- Exercício 19 
+
+idade1 :: Int -> Int -> [(String,Int)] -> [String]
+idade1 _ _ [] = []
+idade1 a i ((n,b):t) = if (a - b) >= i
+                       then n : idade1 a i t
+                       else idade a i t
