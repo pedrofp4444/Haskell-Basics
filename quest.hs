@@ -137,4 +137,42 @@ idade1 :: Int -> Int -> [(String,Int)] -> [String]
 idade1 _ _ [] = []
 idade1 a i ((n,b):t) = if (a - b) >= i
                        then n : idade1 a i t
-                       else idade a i t
+                       else idade1 a i t
+
+-- Exercício 20
+
+powerEnumFrom1 :: Int -> Int -> [Int]
+powerEnumFrom1 n 1 = [1]
+powerEnumFrom1 n m
+    | m > 1 = powerEnumFrom1 n (m - 1) ++ [n^(m-1)]
+    | otherwise = []
+
+-- Exercício 21
+
+isPrime1 :: Int -> Bool
+isPrime1 n = if n >= 2 
+            then isPrime2 n 2
+            else False
+        where  
+                isPrime2 :: Int -> Int -> Bool
+                isPrime2 n m 
+                          | m * m > n = True
+                          | mod n m == 0 = False
+                          | otherwise = isPrime2 n (m + 1)
+
+-- Exercício 22
+
+isPrefixOf1 :: Eq a => [a] -> [a] -> Bool
+isPrefixOf1 [] _ = True
+isPrefixOf1 _ [] = False
+isPrefixOf1 (h1:t1) (h2:t2) = h1 == h2 && isPrefixOf1 t1 t2
+
+-- Exercício 23 (ATENÇÃO)
+
+{-A definição do caso de paragem implica que lista vazia é sempre sufixo-}
+
+isSuffixOf1 :: Eq a => [a] -> [a] -> Bool
+isSuffixOf1 [] _ = True
+isSuffixOf1 _ [] = False
+isSuffixOf1 l (h:t) = l == (h:t) || isSuffixOf1 l t
+
