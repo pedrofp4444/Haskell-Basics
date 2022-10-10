@@ -142,7 +142,7 @@ idade1 a i ((n,b):t) = if (a - b) >= i
 -- Exercício 20
 
 powerEnumFrom1 :: Int -> Int -> [Int]
-powerEnumFrom1 n 1 = [1]
+powerEnumFrom1 n 1 = [n]
 powerEnumFrom1 n m
     | m > 1 = powerEnumFrom1 n (m - 1) ++ [n^(m-1)]
     | otherwise = []
@@ -175,4 +175,51 @@ isSuffixOf1 :: Eq a => [a] -> [a] -> Bool
 isSuffixOf1 [] _ = True
 isSuffixOf1 _ [] = False
 isSuffixOf1 l (h:t) = l == (h:t) || isSuffixOf1 l t
+
+-- Exercício 24
+
+isSubsequenceOf1 :: Eq a => [a] -> [a] -> Bool
+isSubsequenceOf1 [] _ = True
+isSubsequenceOf1 _ [] = False
+isSubsequenceOf1 (h1:t1) (h2:t2) = (h1 == h2 && isSubsequenceOf1 t1 t2) || isSubsequenceOf1 (h1:t1) t2
+
+-- Exercício 25 (ATENÇÃO)
+
+{-Precisa de função auxiliar, aind não consegui definir-}
+
+elemIndices1 :: Eq a => a -> [a] -> Int
+elemIndices1 = undefined
+
+-- Exercício 26 (ATENÇÃO)
+
+{-Não obtém a ordem correspondente ao enunciado-}
+
+nub1 :: Eq a => [a] -> [a]
+nub1 [] = []
+nub1 (h:t) 
+        | elem h t = nub1 t
+        | otherwise = h:nub1 t
+
+-- Exercício 27
+
+delete1 :: Eq a => a -> [a] -> [a]
+delete1 _ [] = []
+delete1 a (h:t) = if a == h 
+                  then t 
+                  else h : delete1 a t 
+
+-- Exercício 28
+
+tirar :: Eq a => [a] -> [a] -> [a]
+tirar l [] = l
+tirar [] _ = []
+tirar l (h:t) = tirar (apagar h l) t
+        where 
+                apagar :: Eq a => a -> [a] -> [a]
+                apagar _ [] = []
+                apagar a (h:t) 
+                        | a == h = t
+                        | otherwise = h : apagar a t
+
+-- Exercício 29
 
