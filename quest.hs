@@ -12,8 +12,8 @@ enumFromTo1 a b
 
 enumFromThenTo1 :: Int -> Int -> Int -> [Int]
 enumFromThenTo1 a b c
-                | a < b && a < c = a : enumFromThenTo1 b (b+(b-a)) c 
-                | a > b && a > c = a : enumFromThenTo1 b (b-(a-b)) c 
+                | a <= b && a <= c = a : enumFromThenTo1 b (b+(b-a)) c 
+                | a >= b && a >= c = a : enumFromThenTo1 b (b-(a-b)) c 
                 | otherwise = []
 
 -- Exercício 3
@@ -29,11 +29,16 @@ localizarelem (h:t) b
     | b == 0 = h
     | b /= 0 = localizarelem t (b-1)
 
+excla :: [a] -> Int -> a 
+excla l x 
+    | x == 0 = head l
+    | x > 0 = excla (tail l) (x-1)
+
 -- Exercício 5
 
 reverse1 :: [a] -> [a]
 reverse1 l
-        | length l == 1 || length l == 0 = l
+        | length l == 0 = l
         | otherwise = last l : reverse1 (init l)
 
 -- Exercício 6
@@ -51,7 +56,7 @@ drop1 :: Int -> [a] -> [a]
 drop1 a [] = [] 
 drop1 a (h:t)
         | a <= 0 = (h:t)
-        | a > 0 = drop (a-1) t
+        | a > 0 = drop1 (a-1) t
 
 -- Exercício 8
 
@@ -156,7 +161,7 @@ isPrime1 n = if n >= 2
         where  
                 isPrime2 :: Int -> Int -> Bool
                 isPrime2 n m 
-                          | m * m > n = True
+                          | m^2 > n = True -- m > sqrt n
                           | mod n m == 0 = False
                           | otherwise = isPrime2 n (m + 1)
 
@@ -185,10 +190,14 @@ isSubsequenceOf1 (h1:t1) (h2:t2) = (h1 == h2 && isSubsequenceOf1 t1 t2) || isSub
 
 -- Exercício 25 (ATENÇÃO)
 
-{-Precisa de função auxiliar, aind não consegui definir-}
-
-elemIndices1 :: Eq a => a -> [a] -> Int
-elemIndices1 = undefined
+elemIndices1 :: Eq a => a -> [a] -> [Int]
+elemIndices1 a b = auxiliar a b 0
+        where
+           auxiliar :: Eq a => a -> [a] -> Int -> [Int]
+           auxiliar _ [] _ = []
+           auxiliar x (h:t) y
+                           | x == h = y : auxiliar x t (y+1)
+                           | x /= h = auxiliar x t (y+1)
 
 -- Exercício 26 (ATENÇÃO)
 
@@ -211,8 +220,8 @@ delete1 a (h:t) = if a == h
 -- Exercício 28
 
 tirar :: Eq a => [a] -> [a] -> [a]
-tirar l [] = l
 tirar [] _ = []
+tirar l [] = l
 tirar l (h:t) = tirar (apagar h l) t
         where 
                 apagar :: Eq a => a -> [a] -> [a]
@@ -223,3 +232,127 @@ tirar l (h:t) = tirar (apagar h l) t
 
 -- Exercício 29
 
+union1 :: Eq a => [a] -> [a] -> [a]
+union1 l (h:t)
+        | elem h l = union1 l t
+        | otherwise = union1 (l ++ [h]) t
+
+-- Exercício 30
+
+intersect1 :: Eq a => [a] -> [a] -> [a]
+intersect1 [] _ = []
+intersect1 (h:t) l
+    | elem h l = h : intersect1 t l
+    | otherwise = intersect1 t l
+
+-- Exercício 31
+
+insert1 :: Ord a => a -> [a] -> [a]
+insert1 a [] = [a]
+insert1 a (h:t)
+    | a > h = h : insert1 a t
+    | otherwise = a : h : t
+
+-- Exercício 32
+
+unwords1 :: [String] -> String
+unwords1 [] = ""
+unwords1 (h:t) = h ++ (if null t then "" else " ") ++ unwords1 t
+
+-- Exercício 33
+
+unlines1 :: [String] -> String
+unlines1 [] = ""
+unlines1 (h:t) = h ++ "\n" ++ unlines1 t
+
+-- Exercício 34
+
+pMaior1 :: Ord a => [a] -> Int
+pMaior1 [_] = 0
+pMaior1 (h:t) = let x = pMaior1 t in
+                if h >= (t !! x)
+                then 0
+                else x + 1
+
+-- Exercício 35
+
+lookup1 :: Eq a => a -> [(a,b)] -> Maybe b
+lookup1 _ [] = Nothing
+lookup1 x ((a,b):t) = if x == a
+                     then Just b
+                     else lookup1 x t
+
+-- Exercício 36
+
+preCrescente1 :: Ord a => [a] -> [a]
+preCrescente1 [] = []
+preCrescente1 [a] = [a]
+preCrescente1 (h1:h2:t) = if h2 >= h1
+                         then h1 : preCrescente1 (h2:t)
+                         else [h1]
+
+-- Exercício 37 
+
+iSort1 :: Ord a => [a] -> [a]
+iSort1 [] = []
+iSort1 (h:t) = auxiliar h (iSort1 t)
+        where
+           auxiliar :: Ord a => a -> [a] -> [a]
+           auxiliar a [] = [a]
+           auxiliar a (h:t)
+               | a > h = h : auxiliar a t
+               | otherwise = a : h : t
+
+-- Exercício 38
+
+menor1 :: String -> String -> Bool
+menor1 _ [] = False
+menor1 [] _ = True
+menor1 (h1:t1) (h2:t2) = if h1 < h2
+                        then True
+                        else if h1 == h2 
+                             then menor1 t1 t2
+                             else False
+
+-- Exercício 39 
+
+elemMSet1 ::  Eq a => a -> [(a,Int)] -> Bool
+elemMSet1 _ [] = False
+elemMSet1 a ((h,_):t) = a == h || elemMSet1 a t
+
+-- Exercício 40
+
+converteMSet1 :: [(a,Int)] -> [a]
+converteMSet1 [] = []
+converteMSet1 ((h1,1):t) = h1 : converteMSet1 t
+converteMSet1 ((h1,h2):t) = h1 : converteMSet1 ((h1,h2-1):t)
+
+-- Exercício 41
+
+insereMSet1 :: Eq a => a -> [(a,Int)] -> [(a,Int)]
+insereMSet1 a [] = [(a,1)]
+insereMSet1 a ((b,c):t) = if a == b 
+                         then (b,c + 1) : t 
+                         else (b,c) : insereMSet1 a t
+
+-- Exercício 42
+
+removeMSet1 :: Eq a => a -> [(a,Int)] -> [(a,Int)]
+removeMSet1 a [] = []
+removeMSet1 a ((b,c):t) = if a == b
+                          then if c > 1
+                               then (b, c-1) : t
+                               else t 
+                          else (b,c) : removeMSet1 a t      
+
+-- Exercício 43
+
+constroiMSet1 :: Ord a => [a] -> [(a,Int)]
+constroiMSet1 [] = []
+constroiMSet1 l = auxiliar (last l) (constroiMSet1 (init l))
+        where -- Esta função auxiliar é igual ao insereMSet1
+          auxiliar :: Eq a => a -> [(a,Int)] -> [(a,Int)]
+          auxiliar a [] = [(a,1)]
+          auxiliar a ((b,c):t) = if a == b 
+                                   then (b,c + 1) : t 
+                                   else (b,c) : auxiliar a t
