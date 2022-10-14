@@ -1,5 +1,5 @@
 # Haskell-Basics
-Funções pré-definidas --> começar em Haskell
+Funções b --> começar em Haskell
 
 - Teste 50 questões
 - Ficha 1 PF
