@@ -1,16 +1,18 @@
 module Ficha1 where
 
+import Data.Char 
+
 -- Exercício 1
 
 -- Alínea a)
 
-perimetro :: Double -> Double
-perimetro x = 2 * pi * x
+perimetro1 :: Double -> Double
+perimetro1 x = 2 * pi * x
 
 -- Alínea b)
 
-dist :: (Double, Double) -> (Double, Double) -> Double
-dist (xa, ya) (xb, yb) = sqrt ((xa - xb) ^ 2 + (ya - yb) ^ 2)
+dist1 :: (Double, Double) -> (Double, Double) -> Double
+dist1 (xa, ya) (xb, yb) = sqrt ((xa - xb) ^ 2 + (ya - yb) ^ 2)
 
 -- Alínea c)
 
@@ -125,7 +127,7 @@ stop a = False
 safe :: Semaforo -> Semaforo -> Bool
 safe Vermelho a = True
 safe a Vermelho = True
-safe a a = False
+safe a b = False
 
 -- Exercício 6
 
@@ -166,7 +168,7 @@ dist p1 p2 = sqrt ((x2 - x1) ^ 2 + (y2 - y1) ^ 2)
 
 -- Exercício 7
 
-data Figura = Circulo Ponto Double | Rectangulo Ponto Ponto | Triangulo Ponto Ponto Ponto deriving (Show,Eq)
+data Figura = Circulo Ponto Double | Retangulo Ponto Ponto | Triangulo Ponto Ponto Ponto deriving (Show,Eq)
 
 -- Alínea a)
 
@@ -203,24 +205,24 @@ perimetro (Triangulo p1 p2 p3) = dist p1 p2 + dist p2 p3 + dist p1 p3
 
 -- Alínea a)
 
-isLower :: Char -> Bool
-isLower c = ord c >= ord 'a' && ord c <= ord 'z'
+isLower1 :: Char -> Bool
+isLower1 c = ord c >= ord 'a' && ord c <= ord 'z'
 
 -- Alínea b) 
 
 isDigit :: Char -> Bool
-isDigit d = ord ch >= ord '0' && ord ch <= ord '9'
+isDigit ch = ord ch >= ord '0' && ord ch <= ord '9'
 
 -- Alínea c)
 
 isAlpha :: Char -> Bool
-isAlpha ch = isLower ch || isUpper ch
+isAlpha ch = isLower1 ch || isUpper ch
     where isUpper ch = ord ch >= ord 'A' && ord ch <= ord 'Z'
 
 -- Alínea d)
 
 toUpper :: Char -> Char
-toUpper ch = if isLower ch then chr (ord ch - 32) else ch
+toUpper ch = if isLower1 ch then chr (ord ch - 32) else ch
 
 -- Alínea e)
 
