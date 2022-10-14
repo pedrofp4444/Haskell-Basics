@@ -251,3 +251,4 @@ equiv p1 p2 = corrigir (simplifica p1) == corrigir (simplifica p2)
                     juntar (cm,gm) ((c,g):t) 
                             | g == gm = (c+cm,g) : t
                             | otherwise = (c,g) : juntar (cm,gm) t
+                            
