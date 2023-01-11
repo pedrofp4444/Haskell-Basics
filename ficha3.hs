@@ -31,10 +31,12 @@ viagemBemConstruida ((h1,h2):t) = etapaBemConstruida (h1,h2) && viagemBemConstru
 
 -- Alínea c)
 
-partidaEChegada :: Viagem -> (Hora,Hora)
-partidaEChegada v = (hi,hf)
+partidaEChegada :: Viagem -> Etapa
+partidaEChegada v = H hi hf 
     where (hi,_) = head v
           (_,hf) = last v
+
+{-
 
 -- Alínea d)
 
@@ -56,3 +58,37 @@ tempoEspera _ = H 0 0
 
 tempoTotalViagem :: Viagem -> Hora
 tempoTotalViagem v = adicionaHoras (tempoViagemEfetiva v) (tempoEspera v)
+
+
+-- Exercício 2 
+
+type Poligonal = [Ponto]
+
+-- Alínea a)
+
+comprimento :: Poligonal -> Double
+comprimento (h1:h2:t) = dist h1 h2 + comprimento (h2:t)
+comprimento _ = 0
+
+-- Alínea b)
+
+testaFechada :: Poligonal -> Bool
+testaFechada p = length p >= 3 && head p == last p
+
+-- Alínea c)
+
+triangula :: Poligonal -> [Figura]
+triangula (h1:h2:h3:t) = if h1 == h3
+                         then []
+                         else Triangulo h1 h2 h3 : triangula (h1:h3:t)
+triangula _ = []
+
+-- Alínea d)
+
+area :: Poligonal -> Double
+area p = areaTris (triangula p)
+
+areaTris :: [Figura] -> Double
+areaTris [] = 0
+areaTris (h:t) = area h + areaTris t
+-}

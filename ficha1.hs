@@ -66,14 +66,18 @@ raizes (a,b,c)
 
 -- Exercício 3
 
-type Hora = (Int,Int)
+data Hora = H Int Int deriving Show
+
+--type Hora = (Int,Int)
 
 -- Alínea (a)
 
 horaValidar :: Hora -> Bool
-horaValidar (h,m)
+horaValidar (H h m)
             |h < 24 && h >= 0 && m < 60 && m >= 0 = True
             | otherwise = False
+
+{-
 
 -- Alínea (b)
 
@@ -104,6 +108,8 @@ horaDif (h1,m1) (h2,m2) = if (horaConvert (h1,m1)) > (horaConvert(h2,m2))
 
 horaAdd :: Hora -> Int -> Hora
 horaAdd (h,m) min = minConvert (horaConvert (h,m) + min)
+
+-}
 
 -- Exercício 5
 
@@ -226,8 +232,8 @@ toUpper ch = if isLower1 ch then chr (ord ch - 32) else ch
 
 -- Alínea e)
 
-intToDigit :: Int -> Char
-intToDigit n = chr (n + 48)
+intToDigit1 :: Int -> Char
+intToDigit1 n = chr (n + 48)
 
 -- Alínea f)
 

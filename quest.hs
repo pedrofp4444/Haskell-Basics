@@ -147,17 +147,16 @@ idade1 a i ((n,b):t) = if (a - b) >= i
 -- Exercício 20
 
 powerEnumFrom1 :: Int -> Int -> [Int]
-powerEnumFrom1 n 1 = [n]
 powerEnumFrom1 n m
-    | m > 1 = powerEnumFrom1 n (m - 1) ++ [n^(m-1)]
+    | m >= 1 = powerEnumFrom1 n (m - 1) ++ [n^(m-1)]
     | otherwise = []
 
 -- Exercício 21
 
 isPrime1 :: Int -> Bool
 isPrime1 n = if n >= 2 
-            then isPrime2 n 2
-            else False
+             then isPrime2 n 2
+             else False
         where  
                 isPrime2 :: Int -> Int -> Bool
                 isPrime2 n m 
@@ -207,7 +206,7 @@ nub1 :: Eq a => [a] -> [a]
 nub1 [] = []
 nub1 (h:t) 
         | elem h t = nub1 t
-        | otherwise = h:nub1 t
+        | otherwise = h : nub1 t
 
 -- Exercício 27
 
@@ -356,3 +355,54 @@ constroiMSet1 l = auxiliar (last l) (constroiMSet1 (init l))
           auxiliar a ((b,c):t) = if a == b 
                                    then (b,c + 1) : t 
                                    else (b,c) : auxiliar a t
+
+-- Exercício 44
+
+partitionEithers1 :: [Either a b] -> ([a],[b])
+partitionEithers1 [] = ([],[])
+partitionEithers1 ((Left a):t) = (a : at,bt)
+    where (at,bt) = partitionEithers1 t
+partitionEithers1 ((Right b):t) = (at,b : bt)
+    where (at,bt) = partitionEithers1 t
+
+-- Exercício 45
+
+catMaybes1 :: [Maybe a] -> [a]
+catMaybes1 [] = []
+catMaybes1 (h:t) = case h of Nothing -> catMaybes1 t
+                             Just a -> a : catMaybes1 t
+
+-- Exercício 46
+{-
+data Movimento = Norte | Sul | Este | Oeste deriving Show
+
+caminho1 :: (Int, Int) -> (Int, Int) -> [Movimento]
+caminho1 (xi, yi) (xf, yf) 
+    | yi < yf = Norte : caminho1 (xi, yi + 1) (xf, yf)
+    | yi > yf = Sul : caminho1 (xi, yi - 1) (xf, yf)
+    | xi < xf = Este : caminho1 (xi + 1, yi) (xf, yf)
+    | xi > xf = Oeste : caminho1 (xi - 1, yi) (xf, yf)
+    | otherwise = []
+-}
+-- Exercício 47 
+
+data Movimento = Norte | Sul | Este | Oeste deriving Show
+
+hasLoops1 :: (Int,Int) -> [Movimento] -> Bool
+hasLoops1 _ [] = False
+hasLoops1 i t = (i == pos i t) || (hasLoops1 i (init t))
+        where 
+                pos :: (Int,Int) -> [Movimento] -> (Int,Int)
+                pos l [] = l
+                pos (x, y) l@(h:t) = pos a t
+                        where a = case h of {Norte -> (x, y + 1); Sul -> (x, y - 1); Este -> (x + 1, y); Oeste -> (x - 1, y)}
+
+-- Exercício 50
+
+data Equipamento = Bom | Razoavel | Avariado deriving Show
+
+naoReparar :: [Equipamento] -> Int
+naoReparar [] = 0
+naoReparar (Bom:t) = 1 + naoReparar t
+naoReparar (Razoavel:t) = 1 + naoReparar t
+naoReparar (_:t) = naoReparar t
